@@ -1,6 +1,6 @@
 # Multithreaded TCP Chat Application
 
-A command-line chat application built with Python socket programming and multithreading. It allows multiple clients to connect to a central server, exchange public messages, and send private messages to specific users simultaneously.
+A command line chat application built with Python socket programming and multithreading. It allows multiple clients to connect to a central server, exchange public messages, and send private messages to specific users simultaneously.
 
 The application uses TCP for reliable communication and `prompt_toolkit` to provide a better terminal experience when sending and receiving messages concurrently.
 
@@ -9,7 +9,7 @@ The application uses TCP for reliable communication and `prompt_toolkit` to prov
 - **Multiple Clients:** Supports multiple clients connecting to the server simultaneously.
 - **Public Messaging:** Broadcast messages to all connected clients using `@all`.
 - **Private Messaging:** Send messages directly to a specific user using `@username`.
-- **Case-Insensitive Usernames:** Private message recipient lookup is case-insensitive.
+- **Case Insensitive Usernames:** Private message recipient lookup is case insensitive.
 - **Join and Leave Notifications:** Notify connected users when someone joins or leaves the chat.
 - **Concurrent Communication:** Send and receive messages simultaneously without blocking user input.
 - **Thread Synchronization:** Protect shared client information using Python's `Lock`.
@@ -18,7 +18,7 @@ The application uses TCP for reliable communication and `prompt_toolkit` to prov
 ## Technologies Used
 
 - **Python 3**
-- **Socket Programming:** TCP client-server communication.
+- **Socket Programming:** TCP client server communication.
 - **Threading:** Concurrent client handling and message receiving.
 - **Thread Synchronization:** Protecting shared resources using locks.
 - **Prompt Toolkit:** Handling terminal input and asynchronous output.
@@ -26,7 +26,7 @@ The application uses TCP for reliable communication and `prompt_toolkit` to prov
 ## Project Structure
 
 ```text
-multithreaded-chat/
+multithreaded-TCP-Chat-Application/
 │
 ├── client.py       # Client application
 ├── server.py       # Server application
@@ -49,8 +49,8 @@ python --version
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+git clone https://github.com/OmarOz/Multithreaded-TCP-Chat-Application
+cd /Multithreaded-TCP-Chat-Application
 ```
 
 Replace the repository URL with your actual GitHub repository URL.
@@ -62,8 +62,6 @@ Install `prompt_toolkit`:
 ```bash
 pip install prompt_toolkit
 ```
-
-No other third-party dependencies are required.
 
 ### 3. Configure the Connection
 
@@ -135,7 +133,7 @@ To send a private message to a specific user, use `@username` followed by your m
 
 The server searches for the recipient's username and forwards the message directly to their socket connection.
 
-Username matching is case-insensitive, so `@ahmed`, `@Ahmed`, and `@AHMED` refer to the same username.
+Username matching is case insensitive, so `@ahmed`, `@Ahmed`, and `@AHMED` refer to the same username.
 
 If the recipient does not exist or is not connected, the sender receives an error message.
 
@@ -165,11 +163,11 @@ Multithreading is a fundamental part of this application. Socket operations such
 
 Using separate threads allows the application to handle multiple clients and perform sending, receiving, and server interaction concurrently.
 
-### 1. Server-Side Multithreading
+### 1. Server Side Multithreading
 
 The server uses a dedicated thread for accepting new connections and creates a separate handler thread for every connected client.
 
-#### A. Connection-Accepting Thread
+#### A. Connection Accepting Thread
 
 ```python
 startConnectionThread = Thread(
@@ -231,7 +229,7 @@ Without separate handler threads, the server could become stuck waiting for one 
 
 With a dedicated handler thread per client, one thread can wait for incoming data while other threads continue processing their respective clients.
 
-### 2. Client-Side Multithreading
+### 2. Client Side Multithreading
 
 The client uses two concurrent activities: sending and receiving messages.
 
@@ -306,7 +304,7 @@ The dictionary maps each client's socket connection to its username:
 }
 ```
 
-Since multiple client-handler threads may access or modify this dictionary concurrently, a `Lock` protects shared access.
+Since multiple client handler threads may access or modify this dictionary concurrently, a `Lock` protects shared access.
 
 For example, registering a new client:
 
@@ -368,9 +366,9 @@ By keeping the critical section short, the server reduces lock contention and al
 
 The application uses TCP (Transmission Control Protocol) to exchange data between clients and the server.
 
-TCP provides a reliable, ordered byte stream, but it does not preserve application-level message boundaries.
+TCP provides a reliable, ordered byte stream, but it does not preserve application level message boundaries.
 
-To distinguish individual messages, the application uses a newline-delimited protocol.
+To distinguish individual messages, the application uses a newline delimited protocol.
 
 Each message is encoded as UTF-8 and terminated with `\n`:
 
@@ -378,7 +376,7 @@ Each message is encoded as UTF-8 and terminated with `\n`:
 s.sendall((message + '\n').encode('utf-8'))
 ```
 
-On the receiving side, the application uses a file-like socket reader:
+On the receiving side, the application uses a file like socket reader:
 
 ```python
 reader = sock.makefile('r', encoding='utf-8')
@@ -392,7 +390,7 @@ The reader extracts messages line by line, allowing the application to process c
 ## Application Workflow
 
 1. The server creates a TCP socket, binds it to a port, and starts listening.
-2. A dedicated connection-accepting thread waits for incoming clients.
+2. A dedicated connection accepting thread waits for incoming clients.
 3. When a client connects, the server creates a handler thread for that client.
 4. The client sends its username to the server.
 5. The server registers the client's socket and username in the shared dictionary.
@@ -401,25 +399,13 @@ The reader extracts messages line by line, allowing the application to process c
 8. The server processes each message and either broadcasts it or forwards it to a specific recipient.
 9. When a client leaves, the server removes its connection and broadcasts a disconnection notification.
 
-## Future Improvements
-
-- Implement graceful server shutdown and coordinated thread termination.
-- Validate usernames and prevent duplicate usernames.
-- Improve connection cleanup and handling of unexpected client disconnections.
-- Add message timestamps.
-- Introduce authentication and authorization.
-- Support multiple chat rooms.
-- Add message history and persistent storage.
-- Introduce message-size limits and more robust protocol validation.
-- Improve error reporting and logging.
-
 ## Learning Objectives
 
 This project demonstrates practical concepts in:
 
-- TCP client-server architecture.
+- TCP client server architecture.
 - Python socket programming.
-- Blocking and non-blocking application behavior.
+- Blocking and non blocking application behavior.
 - Multithreading and concurrent execution.
 - Shared resources and thread synchronization.
 - Lock contention and critical sections.
