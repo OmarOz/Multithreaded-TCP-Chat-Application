@@ -399,15 +399,3 @@ The reader extracts messages line by line, allowing the application to process c
 8. The server processes each message and either broadcasts it or forwards it to a specific recipient.
 9. When a client leaves, the server removes its connection and broadcasts a disconnection notification.
 
-## Learning Objectives
-
-This project demonstrates practical concepts in:
-
-- TCP client server architecture.
-- Python socket programming.
-- Blocking and non blocking application behavior.
-- Multithreading and concurrent execution.
-- Shared resources and thread synchronization.
-- Lock contention and critical sections.
-- Message framing over TCP.
-- Basic network application design.
